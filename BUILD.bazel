@@ -1,0 +1,13 @@
+load("//rules/buildifier:rules.bzl", "buildifier")
+load("//rules/format:rules.bzl", "format")
+
+buildifier(
+    name = "buildifier",
+)
+
+format(
+    name = "buildifier_format",
+    srcs = ["@rules_format_files//:buildifier_files"],
+    formatter = "//:buildifier",
+    prefix = "external/rules_format_files/files",
+)

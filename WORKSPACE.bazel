@@ -1,0 +1,54 @@
+workspace(name = "rules_format")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+# Go
+GO_VERSION = "v0.24.5"
+
+http_archive(
+    name = "io_bazel_rules_go",
+    sha256 = "d1ffd055969c8f8d431e2d439813e42326961d0942bdf734d2c95dc30c369566",
+    url = "https://github.com/bazelbuild/rules_go/releases/download/%s/rules_go-%s.tar.gz" % (GO_VERSION, GO_VERSION),
+)
+
+load("@io_bazel_rules_go//go:deps.bzl", "go_register_toolchains", "go_rules_dependencies")
+
+go_rules_dependencies()
+
+go_register_toolchains()
+
+# Protobuf
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "9b4ee22c250fe31b16f1a24d61467e40780a3fbb9b91c3b65be2a376ed913a1a",
+    strip_prefix = "protobuf-3.13.0",
+    url = "https://github.com/protocolbuffers/protobuf/archive/v3.13.0.tar.gz",
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
+
+# Buildtools
+BUILDTOOLS_VERSION = "3.5.0"
+
+http_archive(
+    name = "com_github_bazelbuild_buildtools",
+    sha256 = "f5b666935a827bc2b6e2ca86ea56c796d47f2821c2ff30452d270e51c2a49708",
+    strip_prefix = "buildtools-%s" % BUILDTOOLS_VERSION,
+    url = "https://github.com/bazelbuild/buildtools/archive/%s.zip" % BUILDTOOLS_VERSION,
+)
+
+load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_dependencies")
+
+buildifier_dependencies()
+
+# Format
+
+load("//rules/file:workspace.bzl", "files")
+
+files(
+    name = "rules_format_files",
+    build = "@rules_format//:BUILD.file.bazel",
+    root_file = "@rules_format//:WORKSPACE.bazel",
+)
