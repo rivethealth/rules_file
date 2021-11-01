@@ -11,10 +11,11 @@ def _format_impl(ctx):
         if not src.path.startswith(prefix):
             fail("File %s not in %s" % (src.path, prefix))
         formatted = ctx.actions.declare_file("%s/src/%s" % (ctx.label.name, src.path))
-        script += "format %s %s \n" % (src.path[len(prefix):], formatted.path)
+        path = src.path[len(prefix):]
+        script += "format %s %s \n" % (path, formatted.path)
         outputs.append(formatted)
 
-        formatter.fn(ctx, src, formatted, *formatter.args)
+        formatter.fn(ctx, path, src, formatted, *formatter.args)
 
     bin = ctx.actions.declare_file("%s/bin" % ctx.label.name)
     ctx.actions.expand_template(

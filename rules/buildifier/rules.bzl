@@ -1,6 +1,6 @@
 load("//rules/format:providers.bzl", "FormatInfo")
 
-def _buildifier_fn(ctx, src, out, bin):
+def _buildifier_fn(ctx, path, src, out, bin):
     ctx.actions.run_shell(
         command = 'cp "$2" "$3" && "$1" "$3"',
         arguments = [bin.executable.path, src.path, out.path],
