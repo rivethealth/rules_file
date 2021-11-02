@@ -3,15 +3,16 @@ load(":providers.bzl", "FormatInfo")
 
 def _format_impl(ctx):
     formatter = ctx.attr.formatter[FormatInfo]
-    prefix = ctx.attr.prefix + "/"
-
     script = ""
     outputs = []
     for src in ctx.files.srcs:
-        if not src.path.startswith(prefix):
-            fail("File %s not in %s" % (src.path, prefix))
+        path = src.path
+        if ctx.attr.prefix:
+            prefix = ctx.attr.prefix + "/"
+            if not src.path.startswith(prefix):
+                fail("File %s not in %s" % (src.path, prefix))
+            path = path[len(prefix):]
         formatted = ctx.actions.declare_file("%s/src/%s" % (ctx.label.name, src.path))
-        path = src.path[len(prefix):]
         script += "format %s %s \n" % (path, formatted.path)
         outputs.append(formatted)
 
@@ -37,7 +38,6 @@ format = rule(
             providers = [FormatInfo],
         ),
         "prefix": attr.string(
-            mandatory = True,
         ),
         "srcs": attr.label_list(
             allow_files = True,
