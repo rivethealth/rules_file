@@ -45,7 +45,7 @@ buildifier_dependencies()
 
 # Format
 
-load("//rules/file:workspace.bzl", "files")
+load("//file:workspace.bzl", "files")
 
 files(
     name = "rules_format_files",

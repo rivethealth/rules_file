@@ -11,7 +11,7 @@ To use buildifier as a formatter,
 ```bzl
 workspace(name = "example")
 
-load("@rules_format//rules/file:workspace.bzl", "files")
+load("@rules_format//file:workspace.bzl", "files")
 
 files(
     name = "example_files"
@@ -23,8 +23,8 @@ files(
 **BUILD.bazel**
 
 ```bzl
-load("@rules_format//rules/buildifier:rules.bzl", "buildifier")
-load("@rules_format//rules/format:rules.bzl", "format")
+load("@rules_format//buildifier:rules.bzl", "buildifier")
+load("@rules_format//format:rules.bzl", "format")
 
 buildifier(
     name = "buildifier",

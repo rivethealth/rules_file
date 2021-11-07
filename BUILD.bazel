@@ -1,5 +1,5 @@
-load("//rules/buildifier:rules.bzl", "buildifier")
-load("//rules/format:rules.bzl", "format")
+load("//buildifier:rules.bzl", "buildifier")
+load("//format:rules.bzl", "format")
 
 buildifier(
     name = "buildifier",

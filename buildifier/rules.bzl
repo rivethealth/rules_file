@@ -1,4 +1,4 @@
-load("//rules/format:providers.bzl", "FormatInfo")
+load("//format:providers.bzl", "FormatInfo")
 
 def _buildifier_fn(ctx, path, src, out, bin):
     ctx.actions.run_shell(
