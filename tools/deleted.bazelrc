@@ -1,0 +1,6 @@
+aquery --deleted_packages=@rules_format_files//files,@rules_format_files//files/format,@rules_format_files//files/tools,@rules_format_files//files/buildifier,@rules_format_files//files/file
+build --deleted_packages=@rules_format_files//files,@rules_format_files//files/format,@rules_format_files//files/tools,@rules_format_files//files/buildifier,@rules_format_files//files/file
+cquery --deleted_packages=@rules_format_files//files,@rules_format_files//files/format,@rules_format_files//files/tools,@rules_format_files//files/buildifier,@rules_format_files//files/file
+query --deleted_packages=@rules_format_files//files,@rules_format_files//files/format,@rules_format_files//files/tools,@rules_format_files//files/buildifier,@rules_format_files//files/file
+run --deleted_packages=@rules_format_files//files,@rules_format_files//files/format,@rules_format_files//files/tools,@rules_format_files//files/buildifier,@rules_format_files//files/file
+test --deleted_packages=@rules_format_files//files,@rules_format_files//files/format,@rules_format_files//files/tools,@rules_format_files//files/buildifier,@rules_format_files//files/file

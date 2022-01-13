@@ -15,7 +15,7 @@ format(
 sh_binary(
     name = "gen_bazelrc",
     srcs = ["gen-bazelrc.sh"],
-    data = ["deleted.bazelrc.template"],
+    data = ["deleted.bazelrc.tpl"],
 )
 
 sh_binary(
