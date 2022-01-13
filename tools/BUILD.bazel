@@ -1,0 +1,27 @@
+load("//buildifier:rules.bzl", "buildifier")
+load("//format:rules.bzl", "format")
+
+buildifier(
+    name = "buildifier",
+)
+
+format(
+    name = "buildifier_format",
+    srcs = ["@rules_format_files//:buildifier_files"],
+    formatter = ":buildifier",
+    prefix = "external/rules_format_files/files",
+)
+
+sh_binary(
+    name = "gen_bazelrc",
+    srcs = ["gen-bazelrc.sh"],
+    data = ["deleted.bazelrc.template"],
+)
+
+sh_binary(
+    name = "format",
+    srcs = ["format.sh"],
+    data = [
+        ":buildifier_format",
+    ],
+)

@@ -2,6 +2,8 @@ load("@bazel_skylib//lib:shell.bzl", "shell")
 load(":providers.bzl", "FormatInfo")
 
 def _format_impl(ctx):
+    name = ctx.attr.name
+
     formatter = ctx.attr.formatter[FormatInfo]
     script = ""
     outputs = []
@@ -12,13 +14,13 @@ def _format_impl(ctx):
             if not src.path.startswith(prefix):
                 fail("File %s not in %s" % (src.path, prefix))
             path = path[len(prefix):]
-        formatted = ctx.actions.declare_file("%s/src/%s" % (ctx.label.name, src.path))
+        formatted = ctx.actions.declare_file("%s.src/%s" % (name, src.path))
         script += "format %s %s \n" % (path, formatted.path)
         outputs.append(formatted)
 
         formatter.fn(ctx, path, src, formatted, *formatter.args)
 
-    bin = ctx.actions.declare_file("%s/bin" % ctx.label.name)
+    bin = ctx.actions.declare_file(name)
     ctx.actions.expand_template(
         template = ctx.file._runner,
         output = bin,
