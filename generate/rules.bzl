@@ -80,7 +80,7 @@ def _format_impl(ctx):
     for src in srcs:
         path = get_path(src, prefix = prefix, strip_prefix = strip_prefix)
         formatted = actions.declare_file("%s.out/%s" % (name, src.path))
-        formatter.fn(ctx, path, src, formatted, *formatter.args)
+        formatter.fn(ctx, path, src, formatted)
         file_defs[path] = struct(generated = formatted, src = src)
 
     bin = ctx.actions.declare_file(name)
@@ -261,7 +261,6 @@ def _multi_generate_impl(ctx):
     )
 
     default_info = DefaultInfo(
-        files = depset(transitive = [dep.files for dep in deps]),
         runfiles = runfiles,
         executable = bin,
     )

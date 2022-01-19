@@ -1,18 +1,33 @@
 load("//buildifier:rules.bzl", "buildifier")
-load("//generate:rules.bzl", "format", "generate", "generate_test")
+load("//generate:rules.bzl", "format", "generate", "generate_test", "multi_generate")
+load("//black:rules.bzl", "black")
+
+black(
+    name = "black",
+)
+
+format(
+    name = "black_format",
+    srcs = ["@rules_file_files//:black_files"],
+    formatter = ":black",
+    strip_prefix = "files",
+)
 
 buildifier(
     name = "buildifier",
 )
 
-alias(
+multi_generate(
     name = "format",
-    actual = "buildifier_format",
+    deps = [
+        ":black_format",
+        ":buildifier_format",
+    ],
 )
 
-alias(
+generate_test(
     name = "format_test",
-    actual = "buildfier_test",
+    generate = ":format",
 )
 
 format(
@@ -20,11 +35,6 @@ format(
     srcs = ["@rules_file_files//:buildifier_files"],
     formatter = ":buildifier",
     strip_prefix = "files",
-)
-
-generate_test(
-    name = "buildifier_test",
-    generate = ":buildifier_format",
 )
 
 sh_binary(

@@ -21,6 +21,7 @@ packages="$(
     (echo "$test_packages" && echo "$file_packages") \
     | tr '\n' , \
     | sed 's/,$//' \
+    | sort \
 )"
 
 sed -e "s/%{deleted_packages}/$(escape_pattern "$packages")/g" "$RUNFILES_DIR/rules_file/tools/deleted.bazelrc.tpl" > tools/deleted.bazelrc

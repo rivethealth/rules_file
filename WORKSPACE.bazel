@@ -2,6 +2,16 @@ workspace(name = "rules_file")
 
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
+# Python
+PYTHON_VERSION = "0.6.0"
+
+http_archive(
+    name = "rules_python",
+    sha256 = "a30abdfc7126d497a7698c29c46ea9901c6392d6ed315171a6df5ce433aa4502",
+    strip_prefix = "rules_python-%s" % PYTHON_VERSION,
+    url = "https://github.com/bazelbuild/rules_python/archive/%s.tar.gz" % PYTHON_VERSION,
+)
+
 # Go
 GO_VERSION = "v0.24.5"
 
@@ -43,16 +53,6 @@ load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_depen
 
 buildifier_dependencies()
 
-# Python
-PYTHON_VERSION = "0.6.0"
-
-http_archive(
-    name = "rules_python",
-    sha256 = "a30abdfc7126d497a7698c29c46ea9901c6392d6ed315171a6df5ce433aa4502",
-    strip_prefix = "rules_python-%s" % PYTHON_VERSION,
-    url = "https://github.com/bazelbuild/rules_python/archive/%s.tar.gz" % PYTHON_VERSION,
-)
-
 # Format
 
 load("//file:workspace.bzl", "files")
@@ -62,3 +62,14 @@ files(
     build = "@rules_file//:BUILD.file.bazel",
     root_file = "@rules_file//:WORKSPACE.bazel",
 )
+
+load("@rules_python//python:pip.bzl", "pip_parse")
+
+pip_parse(
+    name = "rules_file_pip",
+    requirements_lock = "//:requirements-lock.txt",
+)
+
+load("//rules:workspace.bzl", "file_repositories")
+
+file_repositories()

@@ -1,6 +1,15 @@
 package(default_visibility = ["//visibility:public"])
 
 filegroup(
+    name = "black_files",
+    srcs = glob(
+        [
+            "files/**/*.py",
+        ],
+    ),
+)
+
+filegroup(
     name = "buildifier_files",
     srcs = glob(
         [
@@ -9,7 +18,6 @@ filegroup(
             "files/**/BUILD",
             "files/**/WORKSPACE",
         ],
-        ["**/bazel-*/**"],
     ),
 )
 

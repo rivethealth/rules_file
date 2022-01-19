@@ -1,0 +1,10 @@
+load("@rules_file_pip//:requirements.bzl", "requirement")
+
+package(default_visibility = ["//visibility:public"])
+
+py_binary(
+    name = "black",
+    srcs = ["_black.py"],
+    main = "_black.py",
+    deps = [requirement("black")],
+)

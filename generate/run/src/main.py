@@ -1,5 +1,6 @@
-__package__ = 'generate.run.src'
+__package__ = "generate.run.src"
 import argparse
+
 
 def octal_int(x):
     return int(x, 8)
@@ -15,7 +16,12 @@ write_parser = subparsers.add_parser("write")
 write_parser.add_argument("--file-mode", required=True, type=octal_int)
 write_parser.add_argument("--dir-mode", required=True, type=octal_int)
 write_parser.add_argument(
-    "--file", action="append", help="Tuple of src, out, diff", default=[], dest="files", nargs=3
+    "--file",
+    action="append",
+    help="Tuple of src, out, diff",
+    default=[],
+    dest="files",
+    nargs=3,
 )
 
 args = parser.parse_args()
