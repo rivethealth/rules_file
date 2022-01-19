@@ -1,6 +1,6 @@
 # rules_file
 
-Bazel rules for formatting.
+Bazel rules for basic file operations, like creating directories, and formatting.
 
 ## Example
 
@@ -24,17 +24,22 @@ files(
 
 ```bzl
 load("@rules_file//buildifier:rules.bzl", "buildifier")
-load("@rules_file//generate:rules.bzl", "format")
+load("@rules_file//generate:rules.bzl", "format", "generate_test")
 
 buildifier(
     name = "buildifier",
 )
 
 format(
-    name = "buildifier_format",
+    name = "format",
     srcs = ["@example_files//:buildifier_files"],
-    formatter = "//:buildifier",
-    prefix = "external/example_files/files",
+    formatter = ":buildifier",
+    strip_prefix = "files",
+)
+
+generate_test(
+    name = "test",
+    generate = ":format",
 )
 ```
 
@@ -67,5 +72,8 @@ packages="$(\
     | sed 's/,$//' \
 )"
 
-bazel run "--deleted_packages=$packages" @rules_file//:buildifier_format -- write
+# format
+bazel run "--deleted_packages=$packages" //:format
+# test
+bazel run "--deleted_packages=$packages" //:test
 ```

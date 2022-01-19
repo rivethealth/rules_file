@@ -5,16 +5,26 @@ buildifier(
     name = "buildifier",
 )
 
-format(
+alias(
     name = "format",
+    actual = "buildifier_format"
+)
+
+alias(
+    name = "format_test",
+    actual = "buildfier_test",
+)
+
+format(
+    name = "buildifier_format",
     srcs = ["@rules_file_files//:buildifier_files"],
     formatter = ":buildifier",
     strip_prefix = "files",
 )
 
 generate_test(
-    name = "format_test",
-    generate = ":format",
+    name = "buildifier_test",
+    generate = ":buildifier_format",
 )
 
 sh_binary(
