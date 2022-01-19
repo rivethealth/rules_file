@@ -7,7 +7,7 @@ buildifier(
 
 alias(
     name = "format",
-    actual = "buildifier_format"
+    actual = "buildifier_format",
 )
 
 alias(

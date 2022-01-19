@@ -239,29 +239,29 @@ generate = rule(
 def _multi_generate_impl(ctx):
     actions = ctx.actions
     bash_runfiles = ctx.files._bash_runfiles
-    formats = [format[DefaultInfo] for format in ctx.attr.formats]
+    deps = [target[DefaultInfo] for target in ctx.attr.deps]
     name = ctx.attr.name
-    runner = ctx.file_runner
+    runner = ctx.file._runner
     workspace_name = ctx.workspace_name
 
     runfiles = ctx.runfiles(files = bash_runfiles)
-    runfiles = runfiles.merge_all([format.default_runfiles for format in formats])
+    runfiles = runfiles.merge_all([dep.default_runfiles for dep in deps])
 
     bin = actions.declare_file(name)
     actions.expand_template(
-        executable = True,
+        is_executable = True,
         template = runner,
         output = bin,
         substitutions = {
             "%{formats}": "\n".join([
-                '"$(rlocation %s)"' % shell.quote(runfile_path(workspace_name, format.files_to_run.executable))
-                for format in formats
+                '"$(rlocation %s)"' % shell.quote(runfile_path(workspace_name, dep.files_to_run.executable))
+                for dep in deps
             ]),
         },
     )
 
     default_info = DefaultInfo(
-        files = depset(transitive = [format.files for format in formats]),
+        files = depset(transitive = [dep.files for dep in deps]),
         runfiles = runfiles,
         executable = bin,
     )
@@ -270,7 +270,7 @@ def _multi_generate_impl(ctx):
 
 multi_generate = rule(
     attrs = {
-        "formats": attr.label_list(
+        "deps": attr.label_list(
         ),
         "_bash_runfiles": attr.label(
             allow_files = True,
