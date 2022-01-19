@@ -1,4 +1,4 @@
-load("//format:providers.bzl", "FormatInfo")
+load("//generate:providers.bzl", "FormatterInfo")
 
 def _buildifier_fn(ctx, path, src, out, bin):
     ctx.actions.run_shell(
@@ -12,7 +12,7 @@ def _buildifier_fn(ctx, path, src, out, bin):
 def _buildifier_impl(ctx):
     bin = ctx.attr.bin[DefaultInfo]
 
-    format_info = FormatInfo(
+    format_info = FormatterInfo(
         fn = _buildifier_fn,
         args = [bin.files_to_run],
     )

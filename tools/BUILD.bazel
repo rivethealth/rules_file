@@ -1,27 +1,24 @@
 load("//buildifier:rules.bzl", "buildifier")
-load("//format:rules.bzl", "format")
+load("//generate:rules.bzl", "format", "generate", "generate_test")
 
 buildifier(
     name = "buildifier",
 )
 
 format(
-    name = "buildifier_format",
-    srcs = ["@rules_format_files//:buildifier_files"],
+    name = "format",
+    srcs = ["@rules_file_files//:buildifier_files"],
     formatter = ":buildifier",
-    prefix = "external/rules_format_files/files",
+    strip_prefix = "files",
+)
+
+generate_test(
+    name = "format_test",
+    generate = ":format",
 )
 
 sh_binary(
     name = "gen_bazelrc",
     srcs = ["gen-bazelrc.sh"],
     data = ["deleted.bazelrc.tpl"],
-)
-
-sh_binary(
-    name = "format",
-    srcs = ["format.sh"],
-    data = [
-        ":buildifier_format",
-    ],
 )

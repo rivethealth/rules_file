@@ -1,0 +1,4 @@
+build --symlink_prefix=/
+run --symlink_prefix=/
+test --symlink_prefix=/
+test --test_output=errors

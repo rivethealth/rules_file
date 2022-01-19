@@ -1,0 +1,9 @@
+load("@rules_file//file:rules.bzl", "directory")
+
+directory(
+    name = "example",
+    srcs = [
+        "a",
+        "b",
+    ],
+)

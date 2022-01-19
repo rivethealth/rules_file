@@ -1,0 +1,16 @@
+filegroup(
+    name = "bazel",
+    srcs = glob(["bazel/**/*"]),
+    data = ["@rules_file_files//:common"],
+)
+
+sh_test(
+    name = "basic",
+    srcs = ["test_basic.sh"],
+    data = [":bazel"],
+    tags = ["local"],
+)
+
+test_suite(
+    name = "test",
+)

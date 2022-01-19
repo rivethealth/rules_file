@@ -3,6 +3,13 @@ def _files_impl(ctx):
     content = ctx.read(ctx.attr.build)
     ctx.file("BUILD.bazel", content = content, executable = False)
     path = ctx.path(ctx.attr.root_file).dirname
+    ignore = [
+        "files/bazel-%s" % path.basename,
+        "files/bazel-bin",
+        "files/bazel-out",
+        "files/bazel-testlogs",
+    ]
+    ctx.file(".bazelignore", "\n".join(ignore))
     ctx.symlink(path, "files")
 
 # def _files_impl(ctx):

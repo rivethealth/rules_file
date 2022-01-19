@@ -1,0 +1,7 @@
+py_binary(
+    name = "bin",
+    srcs = glob(["src/**/*.py"]),
+    main = "src/main.py",
+    visibility = ["//visibility:public"],
+    deps = ["@rules_python//python/runfiles"],
+)

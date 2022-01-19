@@ -12,3 +12,14 @@ filegroup(
         ["**/bazel-*/**"],
     ),
 )
+
+filegroup(
+    name = "common",
+    srcs = glob(
+        ["files/**/*"],
+        [
+            "**/docs/**",
+            "**/test/**",
+        ],
+    ),
+)

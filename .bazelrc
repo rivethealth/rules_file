@@ -1,1 +1,3 @@
 import %workspace%/tools/deleted.bazelrc
+
+test --test_output=streamed

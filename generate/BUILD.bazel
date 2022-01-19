@@ -1,0 +1,23 @@
+load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
+
+package(default_visibility = ["//visibility:public"])
+
+filegroup(
+    name = "runner",
+    srcs = ["runner.sh.tpl"],
+)
+
+filegroup(
+    name = "multi_runner",
+    srcs = ["multi-runner.sh.tpl"],
+)
+
+filegroup(
+    name = "tester",
+    srcs = ["tester.sh.tpl"],
+)
+
+bzl_library(
+    name = "bzl",
+    srcs = glob(["**/*.bzl"]),
+)

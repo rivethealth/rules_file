@@ -1,0 +1,1 @@
+import %workspace%/../../../external/rules_file_files/files/test.bazelrc

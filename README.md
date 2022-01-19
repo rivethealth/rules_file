@@ -1,4 +1,4 @@
-# rules_format
+# rules_file
 
 Bazel rules for formatting.
 
@@ -11,7 +11,7 @@ To use buildifier as a formatter,
 ```bzl
 workspace(name = "example")
 
-load("@rules_format//file:workspace.bzl", "files")
+load("@rules_file//file:workspace.bzl", "files")
 
 files(
     name = "example_files"
@@ -23,8 +23,8 @@ files(
 **BUILD.bazel**
 
 ```bzl
-load("@rules_format//buildifier:rules.bzl", "buildifier")
-load("@rules_format//format:rules.bzl", "format")
+load("@rules_file//buildifier:rules.bzl", "buildifier")
+load("@rules_file//generate:rules.bzl", "format")
 
 buildifier(
     name = "buildifier",
@@ -67,5 +67,5 @@ packages="$(\
     | sed 's/,$//' \
 )"
 
-bazel run "--deleted_packages=$packages" @rules_format//:buildifier_format -- write
+bazel run "--deleted_packages=$packages" @rules_file//:buildifier_format -- write
 ```
