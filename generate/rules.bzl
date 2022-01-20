@@ -52,7 +52,10 @@ def _create_runner(runfiles_fn, name, bash_runfiles, actions, bin, diff_bin, dir
 
     runfiles = runfiles_fn(files = [check_args_file, write_args_file] + bash_runfiles + diffs + generated)
     runfiles = runfiles.merge(diff_bin.default_runfiles)
-    runfiles = runfiles.merge(run_bin.default_runfiles)
+
+    # It seems that Python executable requires data_runfiles.
+    # Otherwise, fails with error: Cannot find .runfiles directory
+    runfiles = runfiles.merge(run_bin.data_runfiles)
 
     default_info = DefaultInfo(
         executable = bin,
