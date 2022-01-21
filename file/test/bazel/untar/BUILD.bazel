@@ -1,0 +1,15 @@
+load("@rules_file//file:rules.bzl", "untar")
+load("@rules_pkg//:pkg.bzl", "pkg_tar")
+
+pkg_tar(
+    name = "tar",
+    srcs = [
+        "a.txt",
+        "b.txt",
+    ],
+)
+
+untar(
+    name = "dir",
+    src = ":tar",
+)

@@ -5,8 +5,15 @@ filegroup(
 )
 
 sh_test(
-    name = "basic",
-    srcs = ["test_basic.sh"],
+    name = "directory",
+    srcs = ["test_directory.sh"],
+    data = [":bazel"],
+    tags = ["local"],
+)
+
+sh_test(
+    name = "untar",
+    srcs = ["test_untar.sh"],
     data = [":bazel"],
     tags = ["local"],
 )

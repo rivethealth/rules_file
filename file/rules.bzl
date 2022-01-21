@@ -41,3 +41,35 @@ directory = rule(
     },
     implementation = _directory_impl,
 )
+
+def _untar_impl(ctx):
+    actions = ctx.actions
+    name = ctx.attr.name
+    src = ctx.file.src
+
+    dir = actions.declare_directory(name)
+
+    args = actions.args()
+    args.add(src)
+    args.add(dir.path)
+    actions.run_shell(
+        arguments = [args],
+        command = 'mkdir -p "$2" && tar xf "$1" -C "$2"',
+        inputs = [src],
+        outputs = [dir],
+    )
+
+    default_info = DefaultInfo(files = depset([dir]))
+
+    return [default_info]
+
+untar = rule(
+    attrs = {
+        "src": attr.label(
+            allow_single_file = True,
+            mandatory = True,
+        ),
+    },
+    doc = "Create directory from tar archive",
+    implementation = _untar_impl,
+)
