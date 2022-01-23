@@ -11,8 +11,8 @@ def _create_runner(runfiles_fn, name, bash_runfiles, actions, bin, diff_bin, dir
     for path, file_def in file_defs.items():
         diff = actions.declare_file("%s.diff/%s.patch" % (name, path))
         args = actions.args()
-        args.add(file_def.src or _NOT_EXISTS)
-        args.add(file_def.generated or _NOT_EXISTS)
+        args.add(file_def.src.path if file_def.src else _NOT_EXISTS)
+        args.add(file_def.generated.path if file_def.generated else _NOT_EXISTS)
         args.add(diff)
         actions.run(
             executable = diff_bin.files_to_run.executable,
