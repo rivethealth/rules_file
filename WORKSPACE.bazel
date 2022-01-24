@@ -63,12 +63,9 @@ files(
     root_file = "@rules_file//:WORKSPACE.bazel",
 )
 
-load("@rules_python//python:pip.bzl", "pip_parse")
+load("//rules:init.bzl", "file_init")
 
-pip_parse(
-    name = "rules_file_pip",
-    requirements_lock = "//:requirements-lock.txt",
-)
+file_init()
 
 load("//rules:workspace.bzl", "file_repositories")
 
