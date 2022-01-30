@@ -1,2 +1,8 @@
 #!/bin/sh -e
-diff -r -u2 --color "$1" "$2" > "$3" 2>&1 || true
+if [ -z "$1" ]; then
+    echo 'Source file does not exist' > "$3"
+elif [ -z "$2" ]; then
+    echo 'Generated file does not exist' > "$3"
+else
+    diff -r -u2 --color "$1" "$2" > "$3" || true
+fi
