@@ -10,7 +10,7 @@ format(
     name = "black_format",
     srcs = ["@rules_file_files//:black_files"],
     formatter = ":black",
-    strip_prefix = "files",
+    strip_prefix = "/files",
 )
 
 buildifier(
@@ -34,7 +34,7 @@ format(
     name = "buildifier_format",
     srcs = ["@rules_file_files//:buildifier_files"],
     formatter = ":buildifier",
-    strip_prefix = "files",
+    strip_prefix = "/files",
 )
 
 sh_binary(

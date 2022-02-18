@@ -1,16 +1,17 @@
-load("//util:path.bzl", "get_path")
+load("//util:path.bzl", "output_name")
 
 def _directory_impl(ctx):
     actions = ctx.actions
     directory = ctx.attr._directory[DefaultInfo]
+    label = ctx.label
     srcs = ctx.files.srcs
-    output_name = ctx.attr.output or ctx.label.name
+    output_name_ = ctx.attr.output or ctx.label.name
     strip_prefix = ctx.attr.strip_prefix
 
-    output = actions.declare_directory(output_name)
+    output = actions.declare_directory(output_name_)
     args = actions.args()
     for src in srcs:
-        path = get_path(src, strip_prefix = strip_prefix)
+        path = output_name(file = src, label = label, strip_prefix = strip_prefix)
         args.add(src)
         args.add("%s/%s" % (output.path, path))
 

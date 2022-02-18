@@ -1,5 +1,5 @@
 load("@bazel_skylib//lib:shell.bzl", "shell")
-load("//util:path.bzl", "get_path", "runfile_path")
+load("//util:path.bzl", "output_name", "runfile_path")
 load(":providers.bzl", "FormatterInfo")
 
 def _create_runner(runfiles_fn, name, bash_runfiles, actions, bin, diff_bin, dir_mode, file_mode, run_bin, runner_template, file_defs, workspace_name):
@@ -69,6 +69,7 @@ def _format_impl(ctx):
     dir_mode = ctx.attr.dir_mode
     file_mode = ctx.attr.file_mode
     formatter = ctx.attr.formatter[FormatterInfo]
+    label = ctx.label
     name = ctx.attr.name
     run = ctx.attr._run[DefaultInfo]
     runner = ctx.file._runner
@@ -79,7 +80,7 @@ def _format_impl(ctx):
 
     file_defs = {}
     for src in srcs:
-        path = get_path(src, prefix = prefix, strip_prefix = strip_prefix)
+        path = output_name(file = src, label = ctx.label, prefix = prefix, strip_prefix = strip_prefix)
         formatted = actions.declare_file("%s.out/%s" % (name, src.path))
         formatter.fn(ctx, path, src, formatted)
         file_defs[path] = struct(generated = formatted, src = src)
@@ -153,6 +154,7 @@ def _generate_impl(ctx):
     diff = ctx.attr._diff[DefaultInfo]
     dir_mode = ctx.attr.dir_mode
     file_mode = ctx.attr.file_mode
+    label = ctx.label
     name = ctx.attr.name
     run = ctx.attr._run[DefaultInfo]
     runner = ctx.file._runner
@@ -164,10 +166,10 @@ def _generate_impl(ctx):
     file_defs = {}
 
     for src in srcs:
-        path = get_path(src, prefix = src_prefix, strip_prefix = src_strip_prefix)
+        path = output_name(file = src, label = label, prefix = src_prefix, strip_prefix = src_strip_prefix)
         file_defs[path] = struct(src = src, generated = None)
     for datum in data:
-        path = get_path(datum, prefix = data_prefix, strip_prefix = data_strip_prefix)
+        path = output_name(file = datum, label = label, prefix = data_prefix, strip_prefix = data_strip_prefix)
         if path in file_defs:
             file_defs[path] = struct(src = file_defs[path].src, generated = datum)
         else:
