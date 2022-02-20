@@ -149,7 +149,9 @@ def _generate_impl(ctx):
     actions = ctx.actions
     bash_runfiles = ctx.files._bash_runfiles
     data = ctx.files.data
-    data_prefix = ctx.attr.data_prefix
+    data_prefix = (
+        ctx.attr.data_prefix[len("/"):] if ctx.attr.data_prefix.startswith("/") else ctx.attr.data_prefix if not ctx.label.package else ctx.label.package if not ctx.attr.data_prefix else "%s/%s" % (ctx.label.package, ctx.attr.data_prefix)
+    )
     data_strip_prefix = ctx.attr.data_strip_prefix
     diff = ctx.attr._diff[DefaultInfo]
     dir_mode = ctx.attr.dir_mode
@@ -158,13 +160,14 @@ def _generate_impl(ctx):
     name = ctx.attr.name
     run = ctx.attr._run[DefaultInfo]
     runner = ctx.file._runner
-    src_prefix = ctx.attr.src_prefix
+    src_prefix = (
+        ctx.attr.src_prefix[len("/"):] if ctx.attr.src_prefix.startswith("/") else ctx.attr.src_prefix if not ctx.label.package else ctx.label.package if not ctx.attr.src_prefix else "%s/%s" % (ctx.label.package, ctx.attr.src_prefix)
+    )
     src_strip_prefix = ctx.attr.src_strip_prefix
     srcs = ctx.files.srcs
     workspace_name = ctx.workspace_name
 
     file_defs = {}
-
     for src in srcs:
         path = output_name(file = src, label = label, prefix = src_prefix, strip_prefix = src_strip_prefix)
         file_defs[path] = struct(src = src, generated = None)
@@ -176,7 +179,6 @@ def _generate_impl(ctx):
             file_defs[path] = struct(src = None, generated = datum)
 
     bin = ctx.actions.declare_file(name)
-
     default_info = _create_runner(
         actions = actions,
         bash_runfiles = bash_runfiles,
@@ -197,10 +199,10 @@ def _generate_impl(ctx):
 generate = rule(
     attrs = {
         "data_prefix": attr.string(
-            doc = "Prefix",
+            doc = "Package-relative prefix to add",
         ),
         "data_strip_prefix": attr.string(
-            doc = "Strip prefix",
+            doc = "Package-relative prefix to remove",
         ),
         "data": attr.label_list(
             allow_files = True,
