@@ -258,8 +258,8 @@ def _multi_generate_impl(ctx):
         template = runner,
         output = bin,
         substitutions = {
-            "%{formats}": "\n".join([
-                '"$(rlocation %s)"' % shell.quote(runfile_path(workspace_name, dep.files_to_run.executable))
+            "%{formats}": " ".join([
+                shell.quote(runfile_path(workspace_name, dep.files_to_run.executable))
                 for dep in deps
             ]),
         },

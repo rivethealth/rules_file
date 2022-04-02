@@ -11,4 +11,6 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
   { echo>&2 "ERROR: cannot find $f"; exit 1; }; f=; set -e
 # --- end runfiles.bash initialization v2 ---
 
-%{formats} "$@"
+for format in %{formats}; do
+  "$(rlocation "$format")" "$@"
+done
