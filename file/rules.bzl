@@ -12,7 +12,7 @@ def _directory_impl(ctx):
     args = actions.args()
     for src in srcs:
         path = output_name(file = src, label = label, strip_prefix = strip_prefix)
-        args.add(src)
+        args.add(src.path)
         args.add("%s/%s" % (output.path, path))
     args.set_param_file_format("multiline")
     args.use_param_file("@%s")
