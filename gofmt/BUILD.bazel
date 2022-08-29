@@ -1,0 +1,14 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_binary(
+    name = "bin",
+    embed = [":gofmt_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "gofmt_lib",
+    srcs = ["main.go"],
+    importpath = "github.com/rivethealth/gofmt",
+    visibility = ["//visibility:private"],
+)

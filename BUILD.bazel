@@ -1,3 +1,22 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+# gazelle:proto disable
+# gazelle:prefix github.com/rivethealth
+
+gazelle(
+    name = "gazelle-fix",
+    command = "fix",
+)
+
+gazelle(
+    name = "gazelle-update",
+    args = [
+        "-from_file=go.mod",
+        "-to_macro=reps.bzl%go_repositories",
+        "-prune",
+    ],
+    command = "update-repos",
+)
+
 test_suite(
     name = "test",
     tests = [
