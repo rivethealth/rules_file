@@ -78,9 +78,9 @@ buildifier_dependencies()
 load("//file:workspace.bzl", "files")
 
 files(
-    name = "rules_file_files",
-    build = "@rules_file//:BUILD.file.bazel",
-    root_file = "@rules_file//:WORKSPACE.bazel",
+    name = "files",
+    build = "@rules_file//:files.bazel",
+    root_file = "//:WORKSPACE.bazel",
 )
 
 load("//rules:init.bzl", "file_init")
