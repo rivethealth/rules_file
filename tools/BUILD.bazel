@@ -1,4 +1,5 @@
 load("//buildifier:rules.bzl", "buildifier")
+load("//file:rules.bzl", "bazelrc_deleted_packages", "find_packages")
 load("//generate:rules.bzl", "format", "generate", "generate_test", "multi_generate")
 load("//black:rules.bzl", "black")
 
@@ -8,7 +9,7 @@ black(
 
 format(
     name = "black_format",
-    srcs = ["@rules_file_files//:black_files"],
+    srcs = ["@files//:black_files"],
     formatter = ":black",
     strip_prefix = "/files",
 )
@@ -32,13 +33,23 @@ generate_test(
 
 format(
     name = "buildifier_format",
-    srcs = ["@rules_file_files//:buildifier_files"],
+    srcs = ["@files//:buildifier_files"],
     formatter = ":buildifier",
     strip_prefix = "/files",
 )
 
-sh_binary(
+find_packages(
+    name = "test_packages",
+    roots = [
+        "file/test/bazel",
+    ],
+)
+
+bazelrc_deleted_packages(
     name = "gen_bazelrc",
-    srcs = ["gen-bazelrc.sh"],
-    data = ["deleted.bazelrc.tpl"],
+    output = "deleted.bazelrc",
+    packages = [
+        ":test_packages",
+        "@files//:packages",
+    ],
 )
