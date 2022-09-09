@@ -1,7 +1,7 @@
 filegroup(
     name = "bazel",
     srcs = glob(["bazel/**/*"]),
-    data = ["@rules_file_files//:common"],
+    data = ["@files//:common"],
 )
 
 sh_test(
