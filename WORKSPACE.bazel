@@ -73,16 +73,6 @@ load("@com_github_bazelbuild_buildtools//buildifier:deps.bzl", "buildifier_depen
 
 buildifier_dependencies()
 
-# Rivet Bazel Util
-RIVET_BAZEL_UTIL_VERSION = "f0c1bbe0935c3994e4c1ea4b3370a47d8df9819e"
-
-http_archive(
-    name = "rivet_bazel_util",
-    sha256 = "3d89e5037d34e7fb5202f7ca7d6b26e008de1c27e97bd0c257fa362c3d61240e",
-    strip_prefix = "rivet-bazel-util-%s" % RIVET_BAZEL_UTIL_VERSION,
-    url = "https://github.com/rivethealth/rivet-bazel-util/archive/%s.zip" % RIVET_BAZEL_UTIL_VERSION,
-)
-
 # Format
 
 load("//file:workspace.bzl", "files")

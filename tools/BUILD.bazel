@@ -47,8 +47,8 @@ find_packages(
 )
 
 bazelrc_deleted_packages(
-    name = "gen_bazelrc",
-    output = "deleted.bazelrc",
+    name = "bazelrc",
+    output = "deleted_packages.bazelrc",
     packages = [
         ":test_packages",
         "@files//:packages",
