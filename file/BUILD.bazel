@@ -3,7 +3,8 @@ load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
 package(default_visibility = ["//visibility:public"])
 
 exports_files([
-    "deleted-packages.sh.tpl",
+    "deleted-packages-diff.sh.tpl",
+    "deleted-packages-gen.sh.tpl",
     "find-packages-runner.sh.tpl",
 ])
 

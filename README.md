@@ -50,8 +50,8 @@ files(
 load("@rules_file//file:rules.bzl", "bazelrc_deleted_packages")
 
 bazelrc_deleted_packages(
-    name = "gen_bazelrc",
-    output = "deleted.bazelrc",
+    name = "bazelrc",
+    output = "deleted_packages.bazelrc",
     packages = ["@files//:packages"],
 )
 ```
@@ -67,11 +67,13 @@ filegroup(
 )
 ```
 
-Generate deleted.bazelrc:
+Generate deleted_packages.bazelrc:
 
 ```
-bazel run :gen_bazelrc
+bazel run :bazelrc
 ```
+
+(To check if this is up-to-date, run `bazel run :bazelrc.diff`.)
 
 **.bazelrc**
 
@@ -101,22 +103,22 @@ find_packages(
 )
 
 bazelrc_deleted_packages(
-    name = "gen_bazelrc",
-    output = "deleted.bazelrc",
+    name = "bazelrc",
+    output = "deleted_packages.bazelrc",
     packages = [":test_packages"],
 )
 ```
 
-Generate `deleted.bazelrc` by running:
+Generate `deleted_packages.bazelrc` by running:
 
 ```
-bazel run :gen_bazelrc
+bazel run :bazelrc
 ```
 
 **.bazelrc**
 
 ```
-import %workspace%/deleted.bazelrc
+import %workspace%/deleted_packages.bazelrc
 ```
 
 ## Generate
@@ -243,7 +245,7 @@ filegroup(
 )
 ```
 
-Generate deleted.bazelrc:
+Generate deleted_packages.bazelrc:
 
 ```
 bazel run :gen_bazelrc
@@ -252,7 +254,7 @@ bazel run :gen_bazelrc
 **.bazelrc**
 
 ```
-import %workspace%/deleted.bazelrc
+import %workspace%/deleted_packages.bazelrc
 ```
 
 To format:
