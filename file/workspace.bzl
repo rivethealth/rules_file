@@ -5,6 +5,7 @@ find_packages(
     name = "packages",
     prefix = repository_name() + "//files",
     roots = [""],
+    visibility = ["//visibility:public"],
 )
 """
 
