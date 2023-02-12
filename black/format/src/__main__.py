@@ -24,38 +24,43 @@ def _detach_wrapper(wrapper):
 
 
 @contextlib.contextmanager
-def _modify_std():
-    real_stdin = sys.stdin
-    real_stderr = sys.stderr
-    real_stdout = sys.stdout
+def _modify_std(stdin=None, stdout=None, stderr=None):
+    if stdin is not None:
+        real_stdin = sys.stdin
+        sys.stdin = stdin
+    if stdout is not None:
+        real_stdout = sys.stdout
+        sys.stdout = stdout
+    if stderr is not None:
+        real_stderr = sys.stderr
+        sys.stderr = stderr
     try:
         yield
     finally:
-        sys.stdin = real_stdin
-        sys.stdout = real_stdout
-        sys.stderr = real_stderr
+        if stdin is not None:
+            sys.stdin = real_stdin
+        if stdout is not None:
+            sys.stdout = real_stdout
+        if stderr is not None:
+            sys.stderr = real_stderr
 
 
 def _run(args):
     args = parser.parse_args(args)
 
     output = io.BytesIO()
-    try:
-        with _modify_std(), args.src.open() as stdin, args.dest.open(
+    stderr = io.TextIOWrapper(output, write_through=True)
+    with args.src.open() as stdin, args.dest.open(
             "w"
-        ) as stdout, _detach_wrapper(
-            io.TextIOWrapper(output, write_through=True)
-        ) as stderr:
-            sys.stdin = stdin
-            sys.stdout = stdout
-            sys.stderr = stderr
+        ) as stdout, _modify_std(stdin=stdin, stdout=stdout, stderr=stderr):
+        try:
             black.main(
                 args.black_options + ["-q", "--stdin-filename", str(args.src), "-"]
             )
-    except SystemExit as e:
-        exit_code = e.code
-    else:
-        exit_code = 0
+        except SystemExit as e:
+            exit_code = e.code
+        else:
+            exit_code = 0
 
     return worker.WorkResult(exit_code=exit_code, output=output.getvalue())
 
