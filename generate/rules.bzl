@@ -145,6 +145,30 @@ format = rule(
     implementation = _format_impl,
 )
 
+def _formatter_composite_impl(ctx):
+    formatters = [target[FormatterInfo] for target in ctx.attr.formatters]
+    fns = [formatter.fn for formatter in formatters]
+
+    def _fn(ctx, path, src, formatted):
+        actions = ctx.actions
+        name = ctx.attr
+        for i, fn in enumerate(fns):
+            tmp = formatted if i == len(fns) - 1 else actions.declare_file("%s.out.%s/%s" % (name, i + 1, src.path))
+            fn(ctx, path, src, tmp)
+            src = tmp
+
+    formatter_info = FormatterInfo(fn = _fn)
+
+    return [formatter_info]
+
+formatter_composite = rule(
+    attrs = {
+        "formatters": attr.label_list(mandatory = True, providers = [FormatterInfo]),
+    },
+    implementation = _formatter_composite_impl,
+    provides = [FormatterInfo],
+)
+
 def _generate_impl(ctx):
     actions = ctx.actions
     bash_runfiles = ctx.files._bash_runfiles
