@@ -50,15 +50,17 @@ def _untar_impl(ctx):
     actions = ctx.actions
     name = ctx.attr.name
     src = ctx.file.src
+    strip_components = ctx.attr.strip_components
 
     dir = actions.declare_directory(name)
 
     args = actions.args()
     args.add(src)
     args.add(dir.path)
+    args.add(str(strip_components))
     actions.run_shell(
         arguments = [args],
-        command = 'mkdir -p "$2" && tar xf "$1" -C "$2"',
+        command = 'mkdir -p "$2" && tar xf "$1" -C "$2" --strip-components "$3"',
         inputs = [src],
         outputs = [dir],
     )
@@ -73,6 +75,7 @@ untar = rule(
             allow_single_file = True,
             mandatory = True,
         ),
+        "strip_components": attr.int(),
     },
     doc = "Create directory from tar archive",
     implementation = _untar_impl,
