@@ -21,7 +21,7 @@ def _directory_impl(ctx):
     actions.run(
         arguments = [args],
         executable = directory.files_to_run.executable,
-        execution_requirements = { "no-remote": "1" },
+        execution_requirements = { "local": "1" },
         inputs = srcs,
         outputs = [output],
         tools = [directory.files_to_run],
@@ -61,8 +61,9 @@ def _untar_impl(ctx):
     args.add(str(strip_components))
     actions.run_shell(
         arguments = [args],
-        command = 'mkdir -p "$2" && tar xf "$1" -C "$2" --strip-components "$3"',
-        execution_requirements = { "no-remote": "1" },
+        # prevent "Ignoring unknown extended header keyword"
+        command = 'mkdir -p "$2" && tar xf "$1" -C "$2" --strip-components "$3" 2> /dev/null',
+        execution_requirements = { "local": "1" },
         inputs = [src],
         outputs = [dir],
     )
