@@ -31,5 +31,5 @@ rules_pkg_dependencies()
 
 local_repository(
     name = "rules_file",
-    path = "../../../external/rules_file_files/files",
+    path = "../../../external/files/files",
 )

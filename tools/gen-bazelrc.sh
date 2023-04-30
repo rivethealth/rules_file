@@ -14,7 +14,7 @@ test_packages="$( \
 
 file_packages="$( \
     (find . -name BUILD -o -name BUILD.bazel) \
-    | sed -e 's:/[^/]*$::' -e 's:^\./::' -e 's:^:@rules_file_files//files/:' -e 's:/.$::' \
+    | sed -e 's:/[^/]*$::' -e 's:^\./::' -e 's:^:@files//files/:' -e 's:/.$::' \
 )"
 
 packages="$(

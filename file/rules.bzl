@@ -21,6 +21,7 @@ def _directory_impl(ctx):
     actions.run(
         arguments = [args],
         executable = directory.files_to_run.executable,
+        execution_requirements = { "no-remote": "1" },
         inputs = srcs,
         outputs = [output],
         tools = [directory.files_to_run],
@@ -61,6 +62,7 @@ def _untar_impl(ctx):
     actions.run_shell(
         arguments = [args],
         command = 'mkdir -p "$2" && tar xf "$1" -C "$2" --strip-components "$3"',
+        execution_requirements = { "no-remote": "1" },
         inputs = [src],
         outputs = [dir],
     )
