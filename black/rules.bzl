@@ -6,6 +6,7 @@ def configure_black(name, dep = "@rules_file_pip_black//:pkg", options = [], vis
         name = name,
         bin = ":%s.bin" % name,
         black_options = options,
+        visibility = visibility,
     )
 
     py_binary(
