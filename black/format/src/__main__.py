@@ -50,9 +50,9 @@ def _run(args):
 
     output = io.BytesIO()
     stderr = io.TextIOWrapper(output, write_through=True)
-    with args.src.open() as stdin, args.dest.open(
-            "w"
-        ) as stdout, _modify_std(stdin=stdin, stdout=stdout, stderr=stderr):
+    with args.src.open() as stdin, args.dest.open("w") as stdout, _modify_std(
+        stdin=stdin, stdout=stdout, stderr=stderr
+    ):
         try:
             black.main(
                 args.black_options + ["-q", "--stdin-filename", str(args.src), "-"]
