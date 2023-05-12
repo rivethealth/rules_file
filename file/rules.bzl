@@ -84,6 +84,42 @@ untar = rule(
     implementation = _untar_impl,
 )
 
+def _unzip_impl(ctx):
+    actions = ctx.actions
+    name = ctx.attr.name
+    src = ctx.file.src
+    strip_components = ctx.attr.strip_components
+
+    dir = actions.declare_directory(name)
+
+    args = actions.args()
+    args.add(src)
+    args.add(dir.path)
+    args.add(str(strip_components))
+    actions.run_shell(
+        arguments = [args],
+        command = 'tmp="$(mktemp -d)" && unzip -q "$1" -d "$tmp" && rm -r "$2" && mv "$tmp"/%s "$2" && rm -fr "$tmp"' % "/".join(["*"] * strip_components),
+        execution_requirements = {"local": "1"},
+        inputs = [src],
+        outputs = [dir],
+    )
+
+    default_info = DefaultInfo(files = depset([dir]))
+
+    return [default_info]
+
+unzip = rule(
+    attrs = {
+        "src": attr.label(
+            allow_single_file = True,
+            mandatory = True,
+        ),
+        "strip_components": attr.int(),
+    },
+    doc = "Create directory from ZIP archive",
+    implementation = _unzip_impl,
+)
+
 def _find_packages_impl(ctx):
     actions = ctx.actions
     find_packages = ctx.executable._find_packages
