@@ -14,7 +14,13 @@ source "${RUNFILES_DIR:-/dev/null}/$f" 2>/dev/null || \
 set -e
 
 if [ "${1-}" = check ]; then
-    exec "$(rlocation rules_file/generate/run/bin)" check @"$(rlocation %{check_args})"
+    if "$(rlocation rules_file/generate/run/bin)" check @"$(rlocation %{check_args})"; then
+      exit
+    else
+      code="$?"
+      echo 'To correct, run bazel run '%{label}
+      exit "$code"
+    fi
 fi
 
 if ! [ -z "${BUILD_WORKSPACE_DIRECTORY-}" ]; then

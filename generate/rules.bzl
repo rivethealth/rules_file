@@ -2,7 +2,7 @@ load("@bazel_skylib//lib:shell.bzl", "shell")
 load("//util:path.bzl", "output_name", "runfile_path")
 load(":providers.bzl", "FormatterInfo")
 
-def _create_runner(runfiles_fn, name, bash_runfiles, actions, bin, diff_bin, dir_mode, file_mode, run_bin, runner_template, file_defs, workspace_name):
+def _create_runner(runfiles_fn, name, bash_runfiles, actions, bin, diff_bin, dir_mode, file_mode, label, run_bin, runner_template, file_defs, workspace_name):
     check_args = ["--"]
     write_args = []
     diffs = []
@@ -41,6 +41,7 @@ def _create_runner(runfiles_fn, name, bash_runfiles, actions, bin, diff_bin, dir
         substitutions = {
             "%{check_args}": shell.quote(runfile_path(workspace_name, check_args_file)),
             "%{dir_mode}": shell.quote(dir_mode),
+            "%{label}": shell.quote(str(label)),
             "%{file_mode}": shell.quote(file_mode),
             "%{write_args}": shell.quote(runfile_path(workspace_name, write_args_file)),
         },
@@ -95,6 +96,7 @@ def _format_impl(ctx):
         dir_mode = dir_mode,
         file_defs = file_defs,
         file_mode = file_mode,
+        label = label,
         name = name,
         run_bin = run,
         runfiles_fn = ctx.runfiles,
@@ -211,6 +213,7 @@ def _generate_impl(ctx):
         dir_mode = dir_mode,
         file_defs = file_defs,
         file_mode = file_mode,
+        label = label,
         name = name,
         run_bin = run,
         runfiles_fn = ctx.runfiles,
