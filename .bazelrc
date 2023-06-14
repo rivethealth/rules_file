@@ -1,3 +1,5 @@
 import %workspace%/tools/deleted_packages.bazelrc
 
+build --experimental_python_import_all_repositories=false
+
 test --test_output=streamed

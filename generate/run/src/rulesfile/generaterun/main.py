@@ -1,4 +1,5 @@
-__package__ = "generate.run.src"
+__package__ = "rulesfile.generaterun"
+
 import argparse
 
 

@@ -1,7 +1,8 @@
 py_binary(
     name = "bin",
     srcs = glob(["src/**/*.py"]),
-    main = "src/main.py",
+    imports = ["src"],
+    main = "src/rulesfile/generaterun/main.py",
     visibility = ["//visibility:public"],
     deps = ["@rules_python//python/runfiles"],
 )
