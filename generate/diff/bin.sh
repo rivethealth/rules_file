@@ -4,5 +4,5 @@ if [ -z "$1" ]; then
 elif [ -z "$2" ]; then
     echo 'Generated file does not exist' > "$3"
 else
-    diff -r -u2 $args "$1" "$2" > "$3" || true
+    diff -r $args "$1" "$2" > "$3" || true
 fi
