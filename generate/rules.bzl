@@ -153,7 +153,7 @@ def _formatter_composite_impl(ctx):
 
     def _fn(ctx, path, src, formatted):
         actions = ctx.actions
-        name = ctx.attr
+        name = ctx.attr.name
         for i, fn in enumerate(fns):
             tmp = formatted if i == len(fns) - 1 else actions.declare_file("%s.out.%s/%s" % (name, i + 1, src.path))
             fn(ctx, path, src, tmp)
