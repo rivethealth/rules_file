@@ -1,2 +1,6 @@
 black
 setproctitle
+# For unclear reasons these `black` deps aren't getting auto-resolved by
+# pip-compile, so I'm putting them in here manually
+tomli
+typing-extensions
